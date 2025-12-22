@@ -11,4 +11,4 @@ jobs:
     steps:
       - name: Ping Render App
         run: |
-          curl -I https://your-app.onrender.com/health
+          curl -I https://financetracker-k5yr.onrender.com/login
