@@ -12,3 +12,4 @@ jobs:
       - name: Ping Render App
         run: |
           curl -I https://financetracker-k5yr.onrender.com/login
+          curl -I https://ll-mt8k.onrender.com
