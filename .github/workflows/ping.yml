@@ -2,14 +2,29 @@ name: Keep Render App Awake
 
 on:
   schedule:
-    - cron: "*/20 * * * *"
+    - cron: "*/15 * * * *" # Every 15 mins
   workflow_dispatch:
+
+permissions:
+  contents: write # Needed to push the "keep-alive" commit
 
 jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Ping Render App
         run: |
-          curl -I https://financetracker-k5yr.onrender.com/login
-          curl -I https://ll-mt8k.onrender.com
+          curl -s -I https://financetracker-k5yr.onrender.com/login
+
+      - name: Update Last Ping Log
+        run: |
+          date > last_ping.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add last_ping.txt
+          # Only commit if there are changes; prevents error if no change
+          git commit -m "Keep-alive: $(date)" || exit 0
+          git push
